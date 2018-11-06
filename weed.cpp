@@ -2,15 +2,13 @@
 
 weed::weed()
 {
-	std::random_device rd;
-	gen = std::mt19937(rd());
-	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
+
 }
 
 void weed::initializeRandPosition()
 {
-	position[0] = domain(gen);
-	position[1] = domain(gen);
+	position[0] = weedRand::getInstance().random();
+	position[1] = weedRand::getInstance().random();
 
 	std::cout << "POSITION 1 " << position[0] << std::endl;
 	std::cout << "POSITION 2 " << position[1] << std::endl;

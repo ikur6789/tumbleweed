@@ -45,8 +45,7 @@ double ofApp::townsend(double * coords, unsigned int dim)
 
 void ofApp::setup()
 {
-	srand(time(0));
-
+	
 	ofEnableDepthTest();
 
 	// size is from -8 to 8
@@ -165,7 +164,7 @@ void ofApp::initializeMesh()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	
+
 }
 
 //--------------------------------------------------------------

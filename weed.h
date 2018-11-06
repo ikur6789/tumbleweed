@@ -1,7 +1,7 @@
 #pragma once
 
-#include <random>
 #include <iostream>
+#include <weedRand.hpp>
 
 class weed
 {
@@ -15,10 +15,4 @@ class weed
         double velocity[2];
         double fitness = 0.0;
 
-        const double MINIMUM = -8;
-        const double MAXIMUM = 8;
-
-    private:
-    	std::mt19937 gen;
-    	std::uniform_real_distribution<double> domain;
 };
