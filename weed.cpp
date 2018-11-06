@@ -13,5 +13,12 @@ void weed::initializeRandPosition()
 
 void weed::updateVelocity(double acceleration[])
 {
+	velocity[0] += acceleration[0];
+	velocity[1] += acceleration[1];
+}
 
+void weed::updatePosition()
+{
+	position[0] += velocity[0];
+	position[1] += velocity[1];
 }
