@@ -10,7 +10,7 @@
 unsigned frame_cnt = 0;
 
 // Fitness function
-double ofApp::function(double * coords, unsigned int dim)
+double ofApp::elvisNeedsBoats(double * coords, unsigned int dim)
 {
 	double sum1 = 0;
 
@@ -32,7 +32,7 @@ double ofApp::function(double * coords, unsigned int dim)
 // this function expects dim to be 2 anyways...
 // townsend function:
 // https://en.wikipedia.org/wiki/Test_functions_for_optimization
-double ofApp::function2(double * coords, unsigned int dim)
+double ofApp::townsend(double * coords, unsigned int dim)
 {
 	double x = coords[0];
 	double y = coords[1];
@@ -61,9 +61,9 @@ void ofApp::setup()
 	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
     // initialize the fitness funcs
-    fitnessFuncs[0] = { function, false };
-    fitnessFuncs[1] = { function2, true };
-    fitnessFuncIndex = 0;
+    fitnessFunctions[0] = { elvisNeedsBoats, false };
+    fitnessFunctions[1] = { townsend, true };
+    selectedFunction = 0;
 
     // initialize the mesh
     initializeMesh();
@@ -76,11 +76,17 @@ void ofApp::setup()
 	cam.setDistance(20.0f);
 	//ofSetColor(255,255,0);
 	//ofSetFrameRate(25);
+
+	for(int i = 0; i < populationSize; ++i)
+	{
+		weed w;
+		w.initializeRandPosition();
+		weedPopulation.push_back(w);
+	}
 }
 
 void ofApp::initializeMesh()
 {
-
 	// size is from -8 to 8
 	const int size = 16;
 	// how many vertices per 1 unit
@@ -111,7 +117,7 @@ void ofApp::initializeMesh()
 
 			// the y position of the current vertex
 			//double currentY = function(coord, 2);
-			double currentY = fitnessFuncs[fitnessFuncIndex].fitnessFunc(coord, 2);
+			double currentY = fitnessFunctions[selectedFunction].functionCall(coord, 2);
 			
 			ofVec3f point(currentX, currentY, currentZ);
 			mesh.addVertex(point);
@@ -159,6 +165,7 @@ void ofApp::initializeMesh()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	
 }
 
 //--------------------------------------------------------------
@@ -172,6 +179,21 @@ void ofApp::draw(){
 	ofSetColor(100,100,100);
 	mesh.drawWireframe();
 	mesh.disableColors();
+
+	double x = 0;
+	double y = 0;
+	double z = 0;
+	
+	for(int i = 0; i < weedPopulation.size(); ++i)
+	{
+		x = weedPopulation[i].position[0];
+		z = weedPopulation[i].position[1];
+		double postArray[] = {x,z};
+		y = fitnessFunctions[selectedFunction].functionCall(postArray,2);
+		
+		ofSetColor(rand(), rand(), rand());
+		ofDrawSphere(glm::vec3(x, y, z), 0.25);
+	}
 
 	cam.end();
 }

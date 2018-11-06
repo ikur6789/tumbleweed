@@ -2,12 +2,13 @@
 
 #include "ofMain.h"
 #include "ofNode.h"
+#include "weed.h"
 #include <vector>
 #include <random>
 #include <iostream>
 
 typedef struct {
-    std::function<double(double *, unsigned int)> fitnessFunc; // the actual evaluation function
+    std::function<double(double *, unsigned int)> functionCall; // the actual evaluation function
     bool isMin;                                                // whether or not we're trying to minimize or maximize
 } probFunc;
 
@@ -40,10 +41,12 @@ class ofApp : public ofBaseApp{
         void initializeMesh();
 
 	private:
-		static double function(double * coords, unsigned int dim);
-		static double function2(double * coords, unsigned int dim);
-		
+		static double elvisNeedsBoats(double * coords, unsigned int dim);
+		static double townsend(double * coords, unsigned int dim);
+		std::vector<weed> weedPopulation;
+		int populationSize = 10;
+
 		const static unsigned int numFitnessFuncs = 2;
-		probFunc fitnessFuncs[numFitnessFuncs];
-		unsigned int fitnessFuncIndex = 0;
+		probFunc fitnessFunctions[numFitnessFuncs];
+		unsigned int selectedFunction = 0;
 };
