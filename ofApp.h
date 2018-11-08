@@ -37,10 +37,11 @@ class ofApp : public ofBaseApp{
         ofSpherePrimitive sphere;
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
+		double wind[2] = {0.1, 0.1};
 
         void initializeMesh();
 
-	private:
+	//private:
 		static double elvisNeedsBoats(double * coords, unsigned int dim);
 		static double townsend(double * coords, unsigned int dim);
 		std::vector<weed> weedPopulation;

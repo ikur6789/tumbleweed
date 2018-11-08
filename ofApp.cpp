@@ -164,7 +164,11 @@ void ofApp::initializeMesh()
 //--------------------------------------------------------------
 void ofApp::update()
 {
-
+	for(int i=0; i<weedPopulation.size(); ++i)
+	{
+		weedPopulation[i].updateVelocity(wind);
+		weedPopulation[i].updatePosition();
+	}
 }
 
 //--------------------------------------------------------------
