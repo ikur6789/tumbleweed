@@ -1,3 +1,4 @@
+/*Ian wind branch*/
 #include "ofApp.h"
 
 #define MINIMUM -8
