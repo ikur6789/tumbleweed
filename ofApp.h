@@ -3,8 +3,8 @@
 #include "ofMain.h"
 #include "ofNode.h"
 #include "weed.h"
+#include "weedRand.hpp"
 #include <vector>
-#include <random>
 #include <iostream>
 
 typedef struct {
@@ -35,8 +35,6 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofVboMesh mesh;
         ofSpherePrimitive sphere;
-		std::default_random_engine gen;
-		std::uniform_real_distribution<double> domain;
 		double wind[2] = {0.1, 0.1};
 
         void initializeMesh();

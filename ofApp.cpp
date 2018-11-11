@@ -56,8 +56,6 @@ void ofApp::setup()
 	const int checks = perUnit * size;
 	//size of spheres **bacteria
 	const float width = 0.5f;
-	//random number generator
-	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
     // initialize the fitness funcs
     fitnessFunctions[0] = { elvisNeedsBoats, false };
@@ -94,8 +92,6 @@ void ofApp::initializeMesh()
 	const int checks = perUnit * size;
 	//size of spheres **bacteria
 	const float width = 0.5f;
-	//random number generator
-	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
     // clear dah mesh
     mesh.clear();
@@ -166,13 +162,32 @@ void ofApp::update()
 {
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
-		weedPopulation[i].updateVelocity(wind);
-		weedPopulation[i].updatePosition();
+		if(weedPopulation[i].position[0] > 8 || weedPopulation[i].position[0] < -8 || weedPopulation[i].position[1] > 8 || weedPopulation[i].position[1] < -8)
+		{
+			weedPopulation[i].position[0] = weedRand::getInstance().random();
+			weedPopulation[i].position[1] = weedRand::getInstance().random();
+		}
+		else
+			weedPopulation[i].updatePosition();
+
+		if(frame_cnt % 100 == 0)		
+			weedPopulation[i].updateVelocity(wind);
+		else
+			weedPopulation[i].drag();
+
+	}
+
+	if(frame_cnt % 100 == 0)
+	{
+		wind[0] = weedRand::getInstance().random()/100;
+		wind[1] = weedRand::getInstance().random()/100;
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+
+	frame_cnt++;
 
 	ofBackgroundGradient(ofColor(65,62,50), ofColor(25,22,10));	
 
@@ -194,7 +209,7 @@ void ofApp::draw(){
 		double postArray[] = {x,z};
 		y = fitnessFunctions[selectedFunction].functionCall(postArray,2);
 		
-		ofSetColor(rand(), rand(), rand());
+		ofSetColor(230, 230, 230);
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);
 	}
 
