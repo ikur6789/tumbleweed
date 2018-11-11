@@ -10,8 +10,8 @@ void weed::initializeRandPosition()
 	position[0] = weedRand::getInstance().random();
 	position[1] = weedRand::getInstance().random();
 
-	std::cout << "POSITION 1 " << position[0] << std::endl;
-	std::cout << "POSITION 2 " << position[1] << std::endl;
+	//std::cout << "POSITION 1 " << position[0] << std::endl;
+	//std::cout << "POSITION 2 " << position[1] << std::endl;
 	
 }
 

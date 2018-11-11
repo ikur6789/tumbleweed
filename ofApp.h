@@ -53,6 +53,9 @@ class ofApp : public ofBaseApp{
 		int populationSize = 10;
 		unsigned int frameCount = 0;
 
+		double bestPos[2] = {0.0,0.0};
+		double bestFitness = -9999.0;
+
 		const static unsigned int numFitnessFuncs = 2;
 		probFunc fitnessFunctions[numFitnessFuncs];
 		unsigned int selectedFunction = 0;
