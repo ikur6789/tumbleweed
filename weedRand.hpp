@@ -21,10 +21,12 @@ class weedRand
 			std::random_device rd;
 			gen = std::mt19937(rd());
 			domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
+			
 		};
 
     	std::mt19937 gen;
     	std::uniform_real_distribution<double> domain;
+		
 		double MINIMUM = -8;
 		double MAXIMUM = 8;
 };
