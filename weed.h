@@ -10,6 +10,7 @@ class weed
         void initializeRandPosition();
         void updateVelocity(double acceleration[]);
 		void updatePosition();
+		void drag();
 
         double position[2];
         double velocity[2];

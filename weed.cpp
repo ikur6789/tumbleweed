@@ -26,3 +26,15 @@ void weed::updatePosition()
 	position[0] += velocity[0];
 	position[1] += velocity[1];
 }
+
+void weed::drag()
+{
+	if(velocity[0] < 0)
+		velocity[0] += 0.001;
+	if(velocity[1] < 0)
+		velocity[1] += 0.001;
+	if(velocity[0] > 0)
+		velocity[0] -= 0.001;
+	if(velocity[1] > 0)
+		velocity[1] -= 0.001;
+}
