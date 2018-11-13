@@ -35,7 +35,15 @@ class ofApp : public ofBaseApp{
 		ofEasyCam cam;
 		ofVboMesh mesh;
         ofSpherePrimitive sphere;
-		double wind[2] = {0.1, 0.1};
+		std::default_random_engine gen;
+		std::uniform_real_distribution<double> domain;
+		
+		double wind[2] = {0.001, 0.001};
+		double WIND_MIN = -0.001;
+		double WIND_MAX = 0.001;
+		bool applyWind = true;
+		unsigned int windLength = 20; // how many frames wind is applied for before break
+		unsigned int windBreak = 100; // how may frames rest before wind starts again
 
         void initializeMesh();
 
@@ -44,6 +52,10 @@ class ofApp : public ofBaseApp{
 		static double townsend(double * coords, unsigned int dim);
 		std::vector<weed> weedPopulation;
 		int populationSize = 10;
+		unsigned int frameCount = 0;
+
+		double bestPos[2] = {0.0,0.0};
+		double bestFitness = -9999.0;
 
 		const static unsigned int numFitnessFuncs = 2;
 		probFunc fitnessFunctions[numFitnessFuncs];
