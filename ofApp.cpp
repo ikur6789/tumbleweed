@@ -7,6 +7,8 @@
 #define DIMENSION 2
 #endif
 
+//smarter wind Ian
+
 unsigned frame_cnt = 0;
 
 // Fitness function
