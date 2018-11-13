@@ -164,10 +164,42 @@ void ofApp::initializeMesh()
 //--------------------------------------------------------------
 void ofApp::update()
 {
+	frameCount++;
+
+	/* Set the wind to a new direction */
+	if (applyWind == true && frameCount % windLength == 0) {
+		for (int i = 0; i < 2; i++) {
+			double newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));
+			//std::cout << "new wind: " << newWind << std::endl;
+			wind[i] = newWind;
+		}
+
+		//std::cout << "wind break begin!\n";
+		applyWind = false;
+	}
+	/* apply the wind again */
+	if(applyWind == false && frameCount % windBreak == 0) {
+		//std::cout << "wind break end!\n";
+		applyWind = true;
+	}
+
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
-		weedPopulation[i].updateVelocity(wind);
+		if (applyWind) weedPopulation[i].updateVelocity(wind);
+
+		weedPopulation[i].applyDrag();
+
 		weedPopulation[i].updatePosition();
+
+		/* Keep track of current best */
+		if (weedPopulation[i].fitness > bestFitness) {
+			bestFitness = weedPopulation[i].fitness;
+			bestPos[0] = weedPopulation[i].position[0];
+			bestPos[1] = weedPopulation[i].position[1];
+			std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
+				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
+		}
+
 	}
 }
 
@@ -193,6 +225,10 @@ void ofApp::draw(){
 		z = weedPopulation[i].position[1];
 		double postArray[] = {x,z};
 		y = fitnessFunctions[selectedFunction].functionCall(postArray,2);
+
+		/* Update the population's fitness */
+		weedPopulation[i].fitness = y;
+		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;
 		
 		ofSetColor(rand(), rand(), rand());
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);
@@ -203,12 +239,16 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+	if (key == ' ') {
+		applyWind = true;
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+	if (key == ' ') {
+		applyWind = false;
+	}
 }
 
 //--------------------------------------------------------------
