@@ -89,6 +89,45 @@ void ofApp::setup()
 		w.b = 100 + rand() % 155;
 		weedPopulation.push_back(w);
 	}
+	printf("Algorithm?: ");
+	cin>>wind_algorithm;
+	switch(wind_algorithm)
+	{
+		case 1:
+		case 'A':
+		case 'a':
+		wind_algorithm='A';
+		break;
+
+		case 2:
+		case 'B':
+		case 'b':
+		wind_algorithm='B';
+		break;
+
+		case 3:
+		case 'C':
+		case 'c':
+		wind_algorithm='C';
+		break;
+
+		case 4:
+		case 'D':
+		case 'd':
+		wind_algorithm='D';
+		break;
+
+		case 5:
+		case 'E':
+		case 'e':
+		wind_algorithm='E';
+		break;
+		
+		default:
+		wind_algorithm=0;
+		break;
+	}
+		printf("picked:%c\n",wind_algorithm);
 }
 
 void ofApp::initializeMesh()
@@ -167,45 +206,7 @@ void ofApp::initializeMesh()
 			}
 		}
 	}
-	printf("Algorithm?: ");
-	cin>>wind_algorithm;
-	switch(wind_algorithm)
-	{
-		case 1:
-		case 'A':
-		case 'a':
-		wind_algorithm='A';
-		break;
-
-		case 2:
-		case 'B':
-		case 'b':
-		wind_algorithm='B';
-		break;
-
-		case 3:
-		case 'C':
-		case 'c':
-		wind_algorithm='C';
-		break;
-
-		case 4:
-		case 'D':
-		case 'd':
-		wind_algorithm='D';
-		break;
-
-		case 5:
-		case 'E':
-		case 'e':
-		wind_algorithm='E';
-		break;
-		
-		default
-		wind_algorithm=0;
-		break;
-	}
-		
+	
 }
 
 void ofApp::initializeWindLine()
