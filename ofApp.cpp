@@ -254,17 +254,13 @@ void ofApp::update()
 							applyWind = false;
 					}
 					/* apply the wind again */
-					if(applyWind == false && frameCount % windBreak == 0) {
+					
+				}
+				if(applyWind == false && frameCount % windBreak == 0) {
 						//std::cout << "wind break end!\n";
 						applyWind = true;
 					}
-					break;
-				}
-<<<<<<< HEAD
-=======
 				break;
-				}
->>>>>>> 85345800d092ea07193226f75a998660ad02fb25
 			}
 
 			case 'B': //Ian's Algorithm
@@ -297,7 +293,9 @@ void ofApp::update()
 			}
 			case 'D': //Kevin's Algorithm
 			{
-
+				// KEVIN's ALGORITHM
+					wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
+					wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
 			}
 			case 'E': //Global Center Algorithm
 			{
@@ -336,16 +334,16 @@ void ofApp::update()
 					//std::cout << "wind break end!\n";
 					applyWind = true;
 				}
-
-				if (applyWind == false) {
-					line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 0.0;
-					line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 0.0;
-				}
-				else {
-					line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
-					line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
-				}
 			}
+		}
+
+		if (applyWind == false) {
+			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 0.0;
+			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 0.0;
+		}
+		else {
+			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
 		}
 	}
 
@@ -395,7 +393,7 @@ void ofApp::update()
 		}
 
 		// Jacob!
-		if (applyWind&&(wind_algorithm=='C')) 
+		if (applyWind) 
 		{
 			double tmpwind[2] = {wind[0], wind[1]};
 			double diff = worstFitness * -1.0;	
