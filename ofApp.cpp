@@ -208,7 +208,8 @@ void ofApp::update()
 			bestFitness = weedPopulation[i].fitness;
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
-			std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
+			if(!(weedPopulation[i].fitness<=-999.0))
+				std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
 				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
 		}
 

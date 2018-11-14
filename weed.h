@@ -22,6 +22,6 @@ class weed
 
         double position[2];
         double velocity[2];
-        double fitness = 0.0;
+        double fitness = -999.0;
 
 };
