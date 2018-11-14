@@ -239,22 +239,26 @@ void ofApp::update()
 		{	
 			case 'A': //BJ's Algorithm
 			{
-				if (applyWind == true && frameCount % windLength == 0) {
-					for (int i = 0; i < 2; i++) {
+				if (applyWind == true && frameCount % windLength == 0) 
+				{
+					for (int i = 0; i < 2; i++) 
+					{
 						if(windCycle==0) //First time evaluation to randomized tumbleweed locations
 							{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
 
-				wind[i] = newWind;
+							wind[i] = newWind;
 
-				applyWind = false;
+							applyWind = false;
+					}
+					/* apply the wind again */
+					if(applyWind == false && frameCount % windBreak == 0) {
+						//std::cout << "wind break end!\n";
+						applyWind = true;
+					}
+					break;
 				}
-				/* apply the wind again */
-				if(applyWind == false && frameCount % windBreak == 0) {
-					//std::cout << "wind break end!\n";
-					applyWind = true;
-				}
-				break;
 			}
+
 			case 'B': //Ian's Algorithm
 			{
 				if (applyWind == true && frameCount % windLength == 0) {
