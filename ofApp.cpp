@@ -178,7 +178,7 @@ void ofApp::update()
 			else
 			{
 				//Want to go reverse of worst tumble weed
-				newWind = (weedPopulation[worstWeed].position[i]*(-1))/10000.0;
+				newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
 			}
 			//std::cout << "new wind: " << newWind << std::endl;
 			wind[i] = newWind;
