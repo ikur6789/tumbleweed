@@ -7,10 +7,7 @@
 #include <random>
 #include <iostream>
 
-typedef struct {
-    std::function<double(double *, unsigned int)> functionCall; // the actual evaluation function
-    bool isMin;                                                // whether or not we're trying to minimize or maximize
-} probFunc;
+#include "probFunc.hpp"
 
 class ofApp : public ofBaseApp{
 
@@ -40,6 +37,8 @@ class ofApp : public ofBaseApp{
 		double wind[2] = {0.001, 0.001};
 		double WIND_MIN = -0.001;
 		double WIND_MAX = 0.001;
+		double weed_step_min = -0.5;
+		double weed_step_max = 0.5;
 		bool applyWind = true;
 		unsigned int windLength = 20; // how many frames wind is applied for before break
 		unsigned int windBreak = 100; // how may frames rest before wind starts again

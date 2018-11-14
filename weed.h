@@ -1,7 +1,11 @@
 #pragma once
 
+#include <vector>
 #include <iostream>
 #include <weedRand.hpp>
+#include <functional>
+
+#include "probFunc.hpp"
 
 #ifndef MINIMUM
 #define MINIMUM -8
@@ -18,6 +22,8 @@ class weed
         void updateVelocity(double acceleration[]);
         void applyDrag();
 		void updatePosition();
+
+        void doRandomSearch(double, double, probFunc *);
 
         double position[2];
         double velocity[2];

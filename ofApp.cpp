@@ -191,6 +191,8 @@ void ofApp::update()
 
 		weedPopulation[i].updatePosition();
 
+		weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
+
 		/* Keep track of current best */
 		if (weedPopulation[i].fitness > bestFitness) {
 			bestFitness = weedPopulation[i].fitness;
