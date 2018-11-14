@@ -41,8 +41,8 @@ class ofApp : public ofBaseApp{
 		double WIND_MIN = -0.001;
 		double WIND_MAX = 0.001;
 		bool applyWind = true;
-		unsigned int windLength = 20; // how many frames wind is applied for before break
-		unsigned int windBreak = 100; // how may frames rest before wind starts again
+		unsigned int windLength = 10; // how many frames wind is applied for before break
+		unsigned int windBreak = 200; // how may frames rest before wind starts again
 
         void initializeMesh();
 
