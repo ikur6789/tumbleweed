@@ -55,6 +55,9 @@ class ofApp : public ofBaseApp{
 
 		double bestPos[2] = {0.0,0.0};
 		double bestFitness = -9999.0;
+		//Need now worst tumble weed
+		int worstWeed = -1; //Identifier for worst tumbleweed
+		double worstPos[2] = {0.0, 0.0};
 
 		const static unsigned int numFitnessFuncs = 2;
 		probFunc fitnessFunctions[numFitnessFuncs];

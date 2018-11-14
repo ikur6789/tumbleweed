@@ -18,6 +18,7 @@ class weed
         void updateVelocity(double acceleration[]);
         void applyDrag();
 		void updatePosition();
+        void windOperations(); //See .cpp file
 
         double position[2];
         double velocity[2];

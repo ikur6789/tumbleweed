@@ -10,6 +10,7 @@
 //smarter wind Ian
 
 unsigned frame_cnt = 0;
+unsigned windCycle = 0;
 
 // Fitness function
 double ofApp::elvisNeedsBoats(double * coords, unsigned int dim)
@@ -170,8 +171,15 @@ void ofApp::update()
 
 	/* Set the wind to a new direction */
 	if (applyWind == true && frameCount % windLength == 0) {
-		for (int i = 0; i < 2; i++) {
-			double newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));
+		for (int i = 0; i < 2; i++) 
+		{
+			if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+				{double newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+			else
+			{
+				//Want to go reverse of worst tumble weed
+				double newWind = worstPos[i]*(-1);
+			}
 			//std::cout << "new wind: " << newWind << std::endl;
 			wind[i] = newWind;
 		}
@@ -183,8 +191,10 @@ void ofApp::update()
 	if(applyWind == false && frameCount % windBreak == 0) {
 		//std::cout << "wind break end!\n";
 		applyWind = true;
+		windCycle++;
 	}
 
+	double cycleWorstFitness = 9999.0;
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
 		if (applyWind) weedPopulation[i].updateVelocity(wind);
@@ -202,6 +212,13 @@ void ofApp::update()
 				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
 		}
 
+		/*Ian: We will now also keep track of the worst tumbleweed's fitness*/
+		//Evaluate the fitness of all of the tumbleweeds
+		if(weedPopulation[i].fitness < cycleWorstFitness) {
+			cycleWorstFitness = weedPopulation[i].fitness;
+			worstPos[0] = weedPopulation[i].position[0];
+			worstPos[1] = weedPopulation[i].position[1];
+		}
 	}
 }
 

@@ -49,3 +49,9 @@ void weed::updatePosition()
 		}
 	}
 }
+
+void weed::windOperations()
+{
+	//Placeholder for now to determine if wind functions should be handled by weeds, but probably should not.
+	//Wind may be able to be it own class
+}
