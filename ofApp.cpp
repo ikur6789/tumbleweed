@@ -168,17 +168,17 @@ void ofApp::initializeMesh()
 void ofApp::update()
 {
 	frameCount++;
-
+	double newWind;
 	/* Set the wind to a new direction */
 	if (applyWind == true && frameCount % windLength == 0) {
 		for (int i = 0; i < 2; i++) 
 		{
 			if(windCycle==0) //First time evaluation to randomized tumbleweed locations
-				{double newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+				{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
 			else
 			{
 				//Want to go reverse of worst tumble weed
-				double newWind = worstPos[i]*(-1);
+				newWind = worstPos[i]*(-1);
 			}
 			//std::cout << "new wind: " << newWind << std::endl;
 			wind[i] = newWind;
