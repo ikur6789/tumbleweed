@@ -23,13 +23,18 @@ void weed::updateVelocity(double acceleration[])
 
 void weed::applyDrag()
 {
+
 	for (int i = 0; i < 2; i++) {
 
 		/* If it's close enough to 0 just stop */
-		if (abs(velocity[i]) < DRAG) velocity[i] = 0;
+		if (abs(velocity[i]) < DRAG) 
+			velocity[i] = 0;
 
-		else if (velocity[i] < 0) velocity[i] += DRAG;
-		else                      velocity[i] -= DRAG;
+		else 
+			if (velocity[i] < 0) 
+				velocity[i] += DRAG;
+			else
+				velocity[i] -= DRAG;
 	}
 }
 
