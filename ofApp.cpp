@@ -497,25 +497,47 @@ void ofApp::keyPressed(int key){
 		case 'r':
 			applyRandomSearch = !applyRandomSearch;
 			std::cout << "Apply Random Search: " << applyRandomSearch << std::endl;
+			break;
 		case '1':
 			wind_algorithm = 'A';
 			printf("Wind now A\n");
+			weed::DRAG = 0.0001;
+			windBreak=100;
+			 WIND_MIN = -0.200;
+		 WIND_MAX = 0.200;
 			break;
 		case '2':
 			wind_algorithm = 'B';
 			printf("Wind now B\n");
+			weed::DRAG = 0.0001;
+			windBreak=100;
+			 WIND_MIN = -0.200;
+		 WIND_MAX = 0.200;
 			break;
 		case '3':
 			wind_algorithm = 'C';
 			printf("Wind now C\n");
+			weed::DRAG = 0.0001;
+			windBreak=100;
+			 WIND_MIN = -0.200;
+		 WIND_MAX = 0.200;
 			break;
 		case '4':
 			wind_algorithm = 'D';
 			printf("Wind now D\n");
+			weed::DRAG = 0.001; //Changed for Kevin's algo
+			windBreak=100;
+			windLength=20;
+			WIND_MIN= -0.01;
+			WIND_MAX=  0.01;
 			break;
 		case '5':
 			wind_algorithm = 'E';
 			printf("Wind now E\n");
+			weed::DRAG = 0.0001;
+			windBreak=100;
+			 WIND_MIN = -0.200;
+		 WIND_MAX = 0.200;
 			break;
 		default:
 			break;

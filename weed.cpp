@@ -1,4 +1,5 @@
 #include "weed.h"
+double weed::DRAG = 0.0001;
 
 weed::weed()
 {

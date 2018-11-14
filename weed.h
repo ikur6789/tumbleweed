@@ -12,7 +12,7 @@
 #define MAXIMUM 8
 #endif
 
-#define DRAG  0.0001
+//#define DRAG  0.0001
 
 class weed
 {
@@ -32,4 +32,6 @@ class weed
         double fitness = -999.0; // in jacob's branch this was 0.0
 
         unsigned char r = 255, g = 255, b = 255;
+
+        static double DRAG;
 };
