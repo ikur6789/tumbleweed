@@ -8,7 +8,7 @@
 #define MAXIMUM 8
 #endif
 
-#define DRAG  0.0001
+#define DRAG  0.001
 
 class weed
 {
