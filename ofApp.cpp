@@ -154,25 +154,25 @@ void ofApp::initializeMesh()
 			}
 		}
 	}
-
 }
 
 //--------------------------------------------------------------
 void ofApp::update()
 {
-	frameCount++;
-
 	/* Set the wind to a new direction */
-	if (applyWind == true && frameCount % windLength == 0) {
-		for (int i = 0; i < 2; i++) {
-			double newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));
-			//std::cout << "new wind: " << newWind << std::endl;
-			wind[i] = newWind;
-		}
+	if (applyWind == true && frameCount % windLength == 0)
+	{
+		std::sort(	weedPopulation.begin(), weedPopulation.end(), 
+					[](weed a, weed b){return a.fitness > b.fitness;}
+					);
+		
+		wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
+		wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
 
 		//std::cout << "wind break begin!\n";
 		applyWind = false;
-	}
+	}	
+
 	/* apply the wind again */
 	if(applyWind == false && frameCount % windBreak == 0) {
 		//std::cout << "wind break end!\n";
@@ -192,17 +192,16 @@ void ofApp::update()
 			bestFitness = weedPopulation[i].fitness;
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
+			
 			std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
 				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
 		}
-
 	}
 }
 
-//--------------------------------------------------------------
 void ofApp::draw(){
 
-	frame_cnt++;
+	frameCount++;
 
 	ofBackgroundGradient(ofColor(65,62,50), ofColor(25,22,10));	
 
@@ -226,7 +225,6 @@ void ofApp::draw(){
 
 		/* Update the population's fitness */
 		weedPopulation[i].fitness = y;
-		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;
 		
 		ofSetColor(230, 230, 230);
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);
