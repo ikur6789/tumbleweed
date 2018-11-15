@@ -60,3 +60,33 @@ void weed::windOperations()
 	//Placeholder for now to determine if wind functions should be handled by weeds, but probably should not.
 	//Wind may be able to be it own class
 }
+/* min and max - step size */
+void weed::doRandomSearch(double min, double max, probFunc *pf)
+{
+	/* Get the current position */
+	double testPos[2] = {position[0], position[1]};
+
+	/* Get a random direction */
+	double dir0 = min + (double)rand() / ((double)RAND_MAX / (max - min));
+	double dir1 = min + (double)rand() / ((double)RAND_MAX / (max - min));
+
+	//std::cout << "min,max " << min << " " << max << std::endl;
+
+	/* Add the random direction to the solution */
+	testPos[0] += dir0;
+	testPos[1] += dir1;
+
+	//std::cout << "Test Dir 0, 1: " << dir0 << " " << dir1 << std::endl;
+
+	/* See if that new solution is better; if so, update
+	 * velocity with said direction */\
+	double tempFitness = pf->functionCall(testPos, 2);
+	//std::cout << "Temp fitness, curfitness: " << tempFitness << " " << fitness << std::endl;
+	if (tempFitness > fitness) {
+		//std::cout << "TAKING TEMP FITNESS!\n";
+		position[0] = testPos[0];
+		position[1] = testPos[1];
+		fitness = tempFitness;
+	}
+}
+

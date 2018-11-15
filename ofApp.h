@@ -7,10 +7,7 @@
 #include <random>
 #include <iostream>
 
-typedef struct {
-    std::function<double(double *, unsigned int)> functionCall; // the actual evaluation function
-    bool isMin;                                                // whether or not we're trying to minimize or maximize
-} probFunc;
+#include "probFunc.hpp"
 
 class ofApp : public ofBaseApp{
 
@@ -34,17 +31,28 @@ class ofApp : public ofBaseApp{
 	private:
 		ofEasyCam cam;
 		ofVboMesh mesh;
+
         ofSpherePrimitive sphere;
+		ofPolyline line;
+
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
 		double wind[2] = {0.001, 0.001};
-		double WIND_MIN = -0.001;
-		double WIND_MAX = 0.001;
+		double WIND_MIN = -0.005;
+		double WIND_MAX = 0.005;
+		
+		bool applyRandomSearch = true;
+		double weed_step_min = -0.5;
+		double weed_step_max = 0.5;
+		
+		bool globalApplyWind = true; // override the above apply wind fo rvariable control
 		bool applyWind = true;
+
 		unsigned int windLength = 10; // how many frames wind is applied for before break
-		unsigned int windBreak = 200; // how may frames rest before wind starts again
+		unsigned int windBreak = 200; // how may frames rest before wind starts again		
 
         void initializeMesh();
+		void initializeWindLine();
 
 	//private:
 		static double elvisNeedsBoats(double * coords, unsigned int dim);

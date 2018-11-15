@@ -70,12 +70,15 @@ void ofApp::setup()
     // initialize the mesh
     initializeMesh();
 
+	// initialize our wind vain
+	initializeWindLine();
+
 	//create spheres
 	sphere.setRadius(width);
 
 	// Initialize the camera closer to our graph
 	cam.setTarget(glm::vec3(0.0f,-5.0f,0.0f));
-	cam.setDistance(20.0f);
+	cam.setDistance(15.0f);
 	//ofSetColor(255,255,0);
 	//ofSetFrameRate(25);
 
@@ -83,6 +86,9 @@ void ofApp::setup()
 	{
 		weed w;
 		w.initializeRandPosition();
+		w.r = 100 + rand() % 155;
+		w.g = 100 + rand() % 155;
+		w.b = 100 + rand() % 155;
 		weedPopulation.push_back(w);
 	}
 }
@@ -123,6 +129,10 @@ void ofApp::initializeMesh()
 			
 			ofVec3f point(currentX, currentY, currentZ);
 			mesh.addVertex(point);
+
+			double red = 3.0f * currentY / 14.0f + 1.0f; // try and get values between 0 and 1
+			std::cout << "Red: " << red << std::endl;
+			mesh.addColor(ofFloatColor(red, 0.0f, 0.0f));
 		}
 	}
 
@@ -164,44 +174,58 @@ void ofApp::initializeMesh()
 
 }
 
+void ofApp::initializeWindLine()
+{
+	line.addVertex(ofVec3f(4.0f, 1.0f, 4.0f));
+	line.addVertex(ofVec3f(4.0f, 1.0f, 4.0f));
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
 	frameCount++;
-	double newWind;
-	/* Set the wind to a new direction */
-	if (applyWind == true && frameCount % windLength == 0) {
-		for (int i = 0; i < 2; i++) 
-		{
-			if(windCycle==0) //First time evaluation to randomized tumbleweed locations
-				{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
-			else
-			{
-				//Want to go reverse of worst tumble weed
-				newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
-			}
-			//std::cout << "new wind: " << newWind << std::endl;
-			wind[i] = newWind;
-		}
 
-		//std::cout << "wind break begin!\n";
-		applyWind = false;
-	}
-	/* apply the wind again */
-	if(applyWind == false && frameCount % windBreak == 0) {
-		//std::cout << "wind break end!\n";
-		applyWind = true;
-		windCycle++;
+	double newWind;
+	if (globalApplyWind)
+	{
+		/* Set the wind to a new direction */
+		if (applyWind == true && frameCount % windLength == 0) {
+			for (int i = 0; i < 2; i++) {
+				if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+					{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+				else
+				{
+					//Want to go reverse of worst tumble weed
+					newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
+				}
+				//std::cout << "new wind: " << newWind << std::endl;
+				wind[i] = newWind;
+			}
+
+			//std::cout << "wind break begin!\n";
+			applyWind = false;
+		}
+		/* apply the wind again */
+		if(applyWind == false && frameCount % windBreak == 0) {
+			//std::cout << "wind break end!\n";
+			applyWind = true;
+		}
 	}
 
 	double cycleWorstFitness = 9999.0;
+
+	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
+	
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
-		if (applyWind) weedPopulation[i].updateVelocity(wind);
+		if (globalApplyWind && applyWind) weedPopulation[i].updateVelocity(wind);
 
 		weedPopulation[i].applyDrag();
 
 		weedPopulation[i].updatePosition();
+
+		if (applyRandomSearch) weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
 
 		/* Keep track of current best */
 		if (weedPopulation[i].fitness > bestFitness) {
@@ -232,9 +256,9 @@ void ofApp::draw(){
 	cam.begin();
 
 	mesh.enableColors();
-	ofSetColor(100,100,100);
+	//ofSetColor(100,100,100);
 	mesh.drawWireframe();
-	mesh.disableColors();
+	//mesh.disableColors();
 
 	double x = 0;
 	double y = 0;
@@ -251,25 +275,48 @@ void ofApp::draw(){
 		weedPopulation[i].fitness = y;
 		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;
 		
-		ofSetColor(rand(), rand(), rand());
+		ofSetColor(weedPopulation[i].r, weedPopulation[i].g, weedPopulation[i].b);
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);
 	}
+
+	
+	auto linePoint = line.getVertices()[0];
+	ofSetColor(0,255,255);
+	ofDrawSphere(glm::vec3(linePoint.x, linePoint.y, linePoint.z), 0.05f);
+	ofSetColor(0,255,0);
+	line.draw();
 
 	cam.end();
 }
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-	if (key == ' ') {
-		applyWind = true;
+	switch (key)
+	{
+		case ' ':
+			globalApplyWind = !globalApplyWind;
+			std::cout << "Global Apply wind: " << globalApplyWind << std::endl;
+			break;
+		case 'a':
+			WIND_MIN += 0.0005;
+			WIND_MAX -= 0.0005;
+			std::cout << "Wind Min,Max: " << WIND_MIN << " " << WIND_MAX << std::endl;
+			break;
+		case 's':
+			WIND_MIN -= 0.0005;
+			WIND_MAX += 0.0005;
+			std::cout << "Wind Min,Max: " << WIND_MIN << " " << WIND_MAX << std::endl;
+			break;
+		case 'r':
+			applyRandomSearch = !applyRandomSearch;
+			std::cout << "Apply Random Search: " << applyRandomSearch << std::endl;
+		default:
+			break;
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-	if (key == ' ') {
-		applyWind = false;
-	}
 }
 
 //--------------------------------------------------------------
