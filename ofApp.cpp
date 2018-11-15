@@ -62,7 +62,7 @@ void ofApp::setup()
     // initialize the fitness funcs
     fitnessFunctions[0] = { elvisNeedsBoats, false };
     fitnessFunctions[1] = { townsend, true };
-    selectedFunction = 0;
+    selectedFunction = 1;
 
     // initialize the mesh
     initializeMesh();
@@ -183,21 +183,57 @@ void ofApp::update()
 		applyWind = true;
 	}
 
+	double worstFitness = 9999.0;
+	double a_bestFitness = -9999.0;
+	for(weed & w : weedPopulation)
+	{
+			if(w.fitness < worstFitness)
+			{
+				worstFitness = w.fitness;	
+			}
+
+			if(w.fitness > a_bestFitness)
+				a_bestFitness = w.fitness;
+	}
+
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
-		if (applyWind) weedPopulation[i].updateVelocity(wind);
-
-		weedPopulation[i].applyDrag();
-
-		weedPopulation[i].updatePosition();
 
 		/* Keep track of current best */
 		if (weedPopulation[i].fitness > bestFitness) {
 			bestFitness = weedPopulation[i].fitness;
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
-			std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
-				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
+			std::cout << "Call Count : " << fitnessCalls << std::endl;
+			std::cout << "Fitness : " << weedPopulation[i].fitness << std::endl;
+			std::cout << "Location : "
+				<< bestPos[0] << ", " << bestPos[1] << std::endl;
+			std::cout << std::endl;
+		}
+
+		//weedPopulation[i].applyDrag();
+
+		weedPopulation[i].updatePosition();
+		
+		//if (applyWind) 
+		{
+			double tmpwind[2] = {wind[0], wind[1]};
+			double diff = worstFitness * -1.0;	
+			double tmpWorstFitness = 0.0;
+			double tmpBestFitness = a_bestFitness + diff;
+			double tmpFitness = weedPopulation[i].fitness + diff;
+
+			double percent;	
+			if(tmpBestFitness != 0.0)
+				percent = tmpFitness / tmpBestFitness; 
+			else 
+				percent = 1.0;
+
+			percent = (-0.9995) * percent + 1.0; 
+			tmpwind[0] *= percent; 
+			tmpwind[1] *= percent; 
+			//weedPopulation[i].updateVelocity(tmpwind);
+			weedPopulation[i].setVelocity(tmpwind);
 		}
 
 	}
@@ -225,7 +261,7 @@ void ofApp::draw(){
 		z = weedPopulation[i].position[1];
 		double postArray[] = {x,z};
 		y = fitnessFunctions[selectedFunction].functionCall(postArray,2);
-
+		fitnessCalls += 1;
 		/* Update the population's fitness */
 		weedPopulation[i].fitness = y;
 		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;

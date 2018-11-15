@@ -15,6 +15,7 @@ class weed
     public:
         weed();
         void initializeRandPosition();
+		void setVelocity(double velocity[]);
         void updateVelocity(double acceleration[]);
         void applyDrag();
 		void updatePosition();
@@ -22,5 +23,4 @@ class weed
         double position[2];
         double velocity[2];
         double fitness = 0.0;
-
 };

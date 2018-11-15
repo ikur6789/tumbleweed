@@ -38,10 +38,12 @@ class ofApp : public ofBaseApp{
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
 		double wind[2] = {0.001, 0.001};
-		double WIND_MIN = -0.001;
-		double WIND_MAX = 0.001;
+		double WIND_MIN = -1.0;
+		double WIND_MAX = 1.0;
 		bool applyWind = true;
 		unsigned int windLength = 20; // how many frames wind is applied for before break
+		unsigned int fitnessCalls = 0;
+
 		unsigned int windBreak = 100; // how may frames rest before wind starts again
 
         void initializeMesh();
@@ -50,7 +52,7 @@ class ofApp : public ofBaseApp{
 		static double elvisNeedsBoats(double * coords, unsigned int dim);
 		static double townsend(double * coords, unsigned int dim);
 		std::vector<weed> weedPopulation;
-		int populationSize = 10;
+		int populationSize = 30;
 		unsigned int frameCount = 0;
 
 		double bestPos[2] = {0.0,0.0};
