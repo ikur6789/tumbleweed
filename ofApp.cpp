@@ -213,12 +213,13 @@ void ofApp::update()
 			std::cout << std::endl;
 		}
 
-		//weedPopulation[i].applyDrag();
+		weedPopulation[i].applyDrag();
 
 		weedPopulation[i].updatePosition();
 		
-		//if (applyWind) 
+		if (applyWind) 
 		{
+			std::cout << "SDFIOSDFOIJSDFIO" << std::endl;
 			double tmpwind[2] = {wind[0], wind[1]};
 			double diff = worstFitness * -1.0;	
 			double tmpWorstFitness = 0.0;
@@ -239,8 +240,8 @@ void ofApp::update()
 
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
-			//weedPopulation[i].updateVelocity(tmpwind);
-			weedPopulation[i].setVelocity(tmpwind);
+			weedPopulation[i].updateVelocity(tmpwind);
+			//weedPopulation[i].setVelocity(tmpwind);
 		}
 
 	}

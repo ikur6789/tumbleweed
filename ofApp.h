@@ -38,8 +38,10 @@ class ofApp : public ofBaseApp{
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
 		double wind[2] = {0.001, 0.001};
-		double WIND_MIN = -1.0;
-		double WIND_MAX = 1.0;
+//		double WIND_MIN = -1.0;
+//		double WIND_MAX = 1.0;
+		double WIND_MIN = -0.005;
+		double WIND_MAX = 0.005;
 		bool applyWind = true;
 		unsigned int windLength = 20; // how many frames wind is applied for before break
 		unsigned int fitnessCalls = 0;
