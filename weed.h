@@ -12,15 +12,17 @@
 
 class weed
 {
-    public:
-        weed();
-        void initializeRandPosition();
-		void setVelocity(double velocity[]);
-        void updateVelocity(double acceleration[]);
-        void applyDrag();
-		void updatePosition();
+public:
 
-        double position[2];
-        double velocity[2];
-        double fitness = 0.0;
+	weed();
+
+	void initializeRandPosition();
+	void setVelocity(double velocity[]);
+	void updateVelocity(double acceleration[]);
+	void applyDrag();
+	void updatePosition();
+
+	double position[2];
+	double velocity[2];
+	double fitness = 0.0;
 };

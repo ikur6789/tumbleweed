@@ -45,7 +45,6 @@ double ofApp::townsend(double * coords, unsigned int dim)
 
 void ofApp::setup()
 {
-	
 	ofEnableDepthTest();
 
 	// size is from -8 to 8
@@ -59,13 +58,13 @@ void ofApp::setup()
 	//random number generator
 	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
-    // initialize the fitness funcs
-    fitnessFunctions[0] = { elvisNeedsBoats, false };
-    fitnessFunctions[1] = { townsend, true };
-    selectedFunction = 1;
+	// initialize the fitness funcs
+	fitnessFunctions[0] = { elvisNeedsBoats, false };
+	fitnessFunctions[1] = { townsend, true };
+	selectedFunction = 1;
 
-    // initialize the mesh
-    initializeMesh();
+	// initialize the mesh
+	initializeMesh();
 
 	//create spheres
 	sphere.setRadius(width);
@@ -97,8 +96,8 @@ void ofApp::initializeMesh()
 	//random number generator
 	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
-    // clear dah mesh
-    mesh.clear();
+	// clear dah mesh
+	mesh.clear();
 
 	// Create Verticies
 	for(int z = 0; z < checks; ++z)
@@ -187,20 +186,23 @@ void ofApp::update()
 	double a_bestFitness = -9999.0;
 	for(weed & w : weedPopulation)
 	{
-			if(w.fitness < worstFitness)
-			{
-				worstFitness = w.fitness;	
-			}
+		if(w.fitness < worstFitness)
+		{
+			worstFitness = w.fitness;	
+		}
 
-			if(w.fitness > a_bestFitness)
-				a_bestFitness = w.fitness;
+		if(w.fitness > a_bestFitness)
+		{
+			a_bestFitness = w.fitness;
+		}
 	}
 
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
 
 		/* Keep track of current best */
-		if (weedPopulation[i].fitness > bestFitness) {
+		if (weedPopulation[i].fitness > bestFitness) 
+		{
 			bestFitness = weedPopulation[i].fitness;
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
@@ -225,11 +227,16 @@ void ofApp::update()
 
 			double percent;	
 			if(tmpBestFitness != 0.0)
+			{
 				percent = tmpFitness / tmpBestFitness; 
+			}
 			else 
+			{
 				percent = 1.0;
+			}
 
 			percent = (-0.9995) * percent + 1.0; 
+
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
 			//weedPopulation[i].updateVelocity(tmpwind);
@@ -240,8 +247,8 @@ void ofApp::update()
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::draw()
+{
 	ofBackgroundGradient(ofColor(65,62,50), ofColor(25,22,10));	
 
 	cam.begin();
