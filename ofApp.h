@@ -31,7 +31,10 @@ class ofApp : public ofBaseApp{
 	private:
 		ofEasyCam cam;
 		ofVboMesh mesh;
+
         ofSpherePrimitive sphere;
+		ofPolyline line;
+
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
 		double wind[2] = {0.001, 0.001};
@@ -49,6 +52,7 @@ class ofApp : public ofBaseApp{
 		unsigned int windBreak = 100; // how may frames rest before wind starts again
 
         void initializeMesh();
+		void initializeWindLine();
 
 	//private:
 		static double elvisNeedsBoats(double * coords, unsigned int dim);

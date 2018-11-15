@@ -67,6 +67,9 @@ void ofApp::setup()
     // initialize the mesh
     initializeMesh();
 
+	// initialize our wind vain
+	initializeWindLine();
+
 	//create spheres
 	sphere.setRadius(width);
 
@@ -168,6 +171,12 @@ void ofApp::initializeMesh()
 
 }
 
+void ofApp::initializeWindLine()
+{
+	line.addVertex(ofVec3f(4.0f, 1.0f, 4.0f));
+	line.addVertex(ofVec3f(4.0f, 1.0f, 4.0f));
+}
+
 //--------------------------------------------------------------
 void ofApp::update()
 {
@@ -192,6 +201,9 @@ void ofApp::update()
 			applyWind = true;
 		}
 	}
+
+	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 300.0;
+	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 300.0;
 
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
@@ -245,6 +257,13 @@ void ofApp::draw(){
 		ofSetColor(weedPopulation[i].r, weedPopulation[i].g, weedPopulation[i].b);
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);
 	}
+
+	
+	auto linePoint = line.getVertices()[0];
+	ofSetColor(0,255,255);
+	ofDrawSphere(glm::vec3(linePoint.x, linePoint.y, linePoint.z), 0.05f);
+	ofSetColor(0,255,0);
+	line.draw();
 
 	cam.end();
 }
