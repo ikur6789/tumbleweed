@@ -37,10 +37,14 @@ class ofApp : public ofBaseApp{
 		double wind[2] = {0.001, 0.001};
 		double WIND_MIN = -0.005;
 		double WIND_MAX = 0.005;
+		
+		bool applyRandomSearch = true;
 		double weed_step_min = -0.5;
 		double weed_step_max = 0.5;
+		
 		bool applyWind = true;
 		bool globalApplyWind = true; // override the above apply wind fo rvariable control
+		
 		unsigned int windLength = 20; // how many frames wind is applied for before break
 		unsigned int windBreak = 100; // how may frames rest before wind starts again
 

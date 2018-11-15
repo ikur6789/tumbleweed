@@ -201,7 +201,7 @@ void ofApp::update()
 
 		weedPopulation[i].updatePosition();
 
-		weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
+		if (applyRandomSearch) weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
 
 		/* Keep track of current best */
 		if (weedPopulation[i].fitness > bestFitness) {
@@ -267,6 +267,9 @@ void ofApp::keyPressed(int key){
 			WIND_MAX += 0.0005;
 			std::cout << "Wind Min,Max: " << WIND_MIN << " " << WIND_MAX << std::endl;
 			break;
+		case 'r':
+			applyRandomSearch = !applyRandomSearch;
+			std::cout << "Apply Random Search: " << applyRandomSearch << std::endl;
 		default:
 			break;
 	}
