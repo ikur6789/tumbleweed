@@ -62,7 +62,7 @@ void ofApp::setup()
     // initialize the fitness funcs
     fitnessFunctions[0] = { elvisNeedsBoats, false };
     fitnessFunctions[1] = { townsend, true };
-    selectedFunction = 1;
+    selectedFunction = 0;
 
     // initialize the mesh
     initializeMesh();
