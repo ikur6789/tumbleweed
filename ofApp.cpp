@@ -202,8 +202,8 @@ void ofApp::update()
 		}
 	}
 
-	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 300.0;
-	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 300.0;
+	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
 
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
