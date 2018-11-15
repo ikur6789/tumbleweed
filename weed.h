@@ -29,4 +29,5 @@ class weed
         double velocity[2];
         double fitness = 0.0;
 
+        unsigned char r = 255, g = 255, b = 255;
 };
