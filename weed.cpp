@@ -15,6 +15,12 @@ void weed::initializeRandPosition()
 	
 }
 
+void weed::setVelocity(double velocity[])
+{
+	this->velocity[0] = velocity[0];
+	this->velocity[1] = velocity[1];
+}
+
 void weed::updateVelocity(double acceleration[])
 {
 	velocity[0] += acceleration[0];
@@ -60,6 +66,7 @@ void weed::windOperations()
 	//Placeholder for now to determine if wind functions should be handled by weeds, but probably should not.
 	//Wind may be able to be it own class
 }
+
 /* min and max - step size */
 void weed::doRandomSearch(double min, double max, probFunc *pf)
 {

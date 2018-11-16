@@ -48,8 +48,10 @@ class ofApp : public ofBaseApp{
 		bool globalApplyWind = true; // override the above apply wind fo rvariable control
 		bool applyWind = true;
 
-		unsigned int windLength = 10; // how many frames wind is applied for before break
-		unsigned int windBreak = 200; // how may frames rest before wind starts again		
+		unsigned int windLength = 10; // how many frames wind is applied for before break, jacob had as 20
+		unsigned int windBreak = 200; // how may frames rest before wind starts again, jacob had as 100
+
+		unsigned int fitnessCalls = 0;
 
         void initializeMesh();
 		void initializeWindLine();
@@ -58,7 +60,7 @@ class ofApp : public ofBaseApp{
 		static double elvisNeedsBoats(double * coords, unsigned int dim);
 		static double townsend(double * coords, unsigned int dim);
 		std::vector<weed> weedPopulation;
-		int populationSize = 10;
+		int populationSize = 30;
 		unsigned int frameCount = 0;
 
 		double bestPos[2] = {0.0,0.0};

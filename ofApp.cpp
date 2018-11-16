@@ -48,7 +48,6 @@ double ofApp::townsend(double * coords, unsigned int dim)
 
 void ofApp::setup()
 {
-	
 	ofEnableDepthTest();
 
 	// size is from -8 to 8
@@ -67,8 +66,8 @@ void ofApp::setup()
     fitnessFunctions[1] = { townsend, true };
     selectedFunction = 0;
 
-    // initialize the mesh
-    initializeMesh();
+	// initialize the mesh
+	initializeMesh();
 
 	// initialize our wind vain
 	initializeWindLine();
@@ -106,8 +105,8 @@ void ofApp::initializeMesh()
 	//random number generator
 	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
-    // clear dah mesh
-    mesh.clear();
+	// clear dah mesh
+	mesh.clear();
 
 	// Create Verticies
 	for(int z = 0; z < checks; ++z)
@@ -221,27 +220,75 @@ void ofApp::update()
 		}
 	}
 
-	double cycleWorstFitness = 9999.0;
+
+	double cycleWorstFitness = 9999.0;  // Ian's
+	double worstFitness = 9999.0;       // jacob
+	double a_bestFitness = -9999.0;     // jacob
+	for(weed & w : weedPopulation)
+	{
+		// BJ!
+		//if (globalApplyWind && applyWind) weedPopulation[i].updateVelocity(wind); // might need to delete!
+
+		if(w.fitness < worstFitness)
+		{
+			worstFitness = w.fitness;	
+		}
+
+		if(w.fitness > a_bestFitness)
+		{
+			a_bestFitness = w.fitness;
+		}
+	}
 
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
-		if (globalApplyWind && applyWind) weedPopulation[i].updateVelocity(wind);
+		// BJ!
+		if (applyRandomSearch) weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
+
+		/* Keep track of current best */
+		if (weedPopulation[i].fitness > bestFitness) 
+		{
+			bestFitness = weedPopulation[i].fitness;
+			bestPos[0] = weedPopulation[i].position[0];
+			bestPos[1] = weedPopulation[i].position[1];
+
+			std::cout << "Call Count : " << fitnessCalls << std::endl;
+			std::cout << "Fitness : " << weedPopulation[i].fitness << std::endl;
+			std::cout << "Location : "
+				<< bestPos[0] << ", " << bestPos[1] << std::endl;
+			std::cout << std::endl;
+		}
+
+		// Jacob!
+		if (applyWind) 
+		{
+			double tmpwind[2] = {wind[0], wind[1]};
+			double diff = worstFitness * -1.0;	
+			double tmpWorstFitness = 0.0;
+			double tmpBestFitness = a_bestFitness + diff;
+			double tmpFitness = weedPopulation[i].fitness + diff;
+
+			double percent;	
+			if(tmpBestFitness != 0.0)
+			{
+				percent = tmpFitness / tmpBestFitness; 
+			}
+			else 
+			{
+				percent = 1.0;
+			}
+
+			percent = (-0.9995) * percent + 1.0; 
+
+			tmpwind[0] *= percent; 
+			tmpwind[1] *= percent; 
+			weedPopulation[i].updateVelocity(tmpwind);
+			//weedPopulation[i].setVelocity(tmpwind);
+		}
 
 		weedPopulation[i].applyDrag();
 
 		weedPopulation[i].updatePosition();
-
-		if (applyRandomSearch) weedPopulation[i].doRandomSearch(weed_step_min, weed_step_max, &fitnessFunctions[selectedFunction]);
-
-		/* Keep track of current best */
-		if (weedPopulation[i].fitness > bestFitness) {
-			bestFitness = weedPopulation[i].fitness;
-			bestPos[0] = weedPopulation[i].position[0];
-			bestPos[1] = weedPopulation[i].position[1];
-			if(!(weedPopulation[i].fitness<=-999.0))
-				std::cout << "NEW BEST Fitness: " << weedPopulation[i].fitness <<
-				"    " << bestPos[0] << ", " << bestPos[1] << std::endl;
-		}
 
 		/*Ian: We will now also keep track of the worst tumbleweed's fitness*/
 		//Evaluate the fitness of all of the tumbleweeds
@@ -255,8 +302,8 @@ void ofApp::update()
 }
 
 //--------------------------------------------------------------
-void ofApp::draw(){
-
+void ofApp::draw()
+{
 	ofBackgroundGradient(ofColor(65,62,50), ofColor(25,22,10));	
 
 	cam.begin();
@@ -276,7 +323,7 @@ void ofApp::draw(){
 		z = weedPopulation[i].position[1];
 		double postArray[] = {x,z};
 		y = fitnessFunctions[selectedFunction].functionCall(postArray,2);
-
+		fitnessCalls += 1;
 		/* Update the population's fitness */
 		weedPopulation[i].fitness = y;
 		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;

@@ -20,6 +20,7 @@ class weed
         weed();
         void initializeRandPosition();
         void updateVelocity(double acceleration[]);
+        void setVelocity(double velocity[]);
         void applyDrag();
 		void updatePosition();
         void windOperations(); //See .cpp file
@@ -28,7 +29,7 @@ class weed
 
         double position[2];
         double velocity[2];
-        double fitness = -999.0;
+        double fitness = -999.0; // in jacob's branch this was 0.0
 
         unsigned char r = 255, g = 255, b = 255;
 };
