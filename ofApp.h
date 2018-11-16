@@ -3,8 +3,8 @@
 #include "ofMain.h"
 #include "ofNode.h"
 #include "weed.h"
+#include "weedRand.hpp"
 #include <vector>
-#include <random>
 #include <iostream>
 
 #include "probFunc.hpp"
@@ -29,6 +29,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 
 	private:
+		//OF variables
 		ofEasyCam cam;
 		ofVboMesh mesh;
 
@@ -37,6 +38,8 @@ class ofApp : public ofBaseApp{
 
 		std::default_random_engine gen;
 		std::uniform_real_distribution<double> domain;
+
+		//wind variables
 		double wind[2] = {0.001, 0.001};
 		double WIND_MIN = -0.005;
 		double WIND_MAX = 0.005;
@@ -56,13 +59,16 @@ class ofApp : public ofBaseApp{
         void initializeMesh();
 		void initializeWindLine();
 
-	//private:
+		//fitness functions
 		static double elvisNeedsBoats(double * coords, unsigned int dim);
 		static double townsend(double * coords, unsigned int dim);
+		
+		//tumbleweed variables
 		std::vector<weed> weedPopulation;
 		int populationSize = 30;
 		unsigned int frameCount = 0;
 
+		//stores the best
 		double bestPos[2] = {0.0,0.0};
 		double bestFitness = -9999.0;
 		//Need now worst tumble weed

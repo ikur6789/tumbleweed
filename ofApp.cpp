@@ -58,8 +58,6 @@ void ofApp::setup()
 	const int checks = perUnit * size;
 	//size of spheres **bacteria
 	const float width = 0.5f;
-	//random number generator
-	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
     // initialize the fitness funcs
     fitnessFunctions[0] = { elvisNeedsBoats, false };
@@ -102,8 +100,6 @@ void ofApp::initializeMesh()
 	const int checks = perUnit * size;
 	//size of spheres **bacteria
 	const float width = 0.5f;
-	//random number generator
-	domain = std::uniform_real_distribution<double>(MINIMUM, MAXIMUM);
 
 	// clear dah mesh
 	mesh.clear();
@@ -170,7 +166,6 @@ void ofApp::initializeMesh()
 			}
 		}
 	}
-
 }
 
 void ofApp::initializeWindLine()
@@ -183,6 +178,10 @@ void ofApp::initializeWindLine()
 void ofApp::update()
 {
 	frameCount++;
+
+	std::sort(	weedPopulation.begin(), weedPopulation.end(), 
+					[](weed a, weed b){return a.fitness > b.fitness;}
+					);
 
 	double newWind;
 	if (globalApplyWind)
@@ -200,6 +199,10 @@ void ofApp::update()
 				//std::cout << "new wind: " << newWind << std::endl;
 				wind[i] = newWind;
 			}
+
+			// KEVIN's ALGORITHM
+			//wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
+			//wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
 
 			//std::cout << "wind break begin!\n";
 			applyWind = false;
@@ -326,7 +329,6 @@ void ofApp::draw()
 		fitnessCalls += 1;
 		/* Update the population's fitness */
 		weedPopulation[i].fitness = y;
-		//std::cout << "Fitness: " << weedPopulation[i].fitness << std::endl;
 		
 		ofSetColor(weedPopulation[i].r, weedPopulation[i].g, weedPopulation[i].b);
 		ofDrawSphere(glm::vec3(x, y, z), 0.25);

@@ -6,9 +6,9 @@ class weedRand
 {
 private:
 
-    	std::mt19937 gen;
+    std::mt19937 gen;
 
-    	std::uniform_real_distribution<double> domain;
+    std::uniform_real_distribution<double> domain;
 
 	const double MINIMUM = -8.0;
 

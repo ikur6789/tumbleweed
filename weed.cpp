@@ -12,7 +12,6 @@ void weed::initializeRandPosition()
 
 	//std::cout << "POSITION 1 " << position[0] << std::endl;
 	//std::cout << "POSITION 2 " << position[1] << std::endl;
-	
 }
 
 void weed::setVelocity(double velocity[])
@@ -29,18 +28,19 @@ void weed::updateVelocity(double acceleration[])
 
 void weed::applyDrag()
 {
-
-	for (int i = 0; i < 2; i++) {
-
+	for (int i = 0; i < 2; i++) 
+	{
 		/* If it's close enough to 0 just stop */
 		if (abs(velocity[i]) < DRAG) 
 			velocity[i] = 0;
 
-		else 
+		else
+		{ 
 			if (velocity[i] < 0) 
 				velocity[i] += DRAG;
 			else
 				velocity[i] -= DRAG;
+		}
 	}
 }
 
@@ -49,12 +49,11 @@ void weed::updatePosition()
 	position[0] += velocity[0];
 	position[1] += velocity[1];
 
-	for (int i = 0; i < 2; i++) {
-		//if (position[i] < MINIMUM) position[i] = MINIMUM;
-		//else if (position[i] > MAXIMUM) position[i] = MAXIMUM;
-
+	for (int i = 0; i < 2; i++) 
+	{
 		/* If we hit a wall start in a new random position */
-		if (position[i] < MINIMUM || position[i] > MAXIMUM) {
+		if (position[i] < MINIMUM || position[i] > MAXIMUM) 
+		{
 			initializeRandPosition();
 			break;
 		}
