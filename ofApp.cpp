@@ -210,13 +210,19 @@ void ofApp::update()
 			//std::cout << "wind break end!\n";
 			applyWind = true;
 		}
+
+		if (applyWind == false) {
+			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 0.0;
+			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 0.0;
+		}
+		else {
+			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
+		}
 	}
 
 	double cycleWorstFitness = 9999.0;
 
-	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
-	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
-	
 	for(int i=0; i<weedPopulation.size(); ++i)
 	{
 		if (globalApplyWind && applyWind) weedPopulation[i].updateVelocity(wind);
