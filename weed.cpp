@@ -20,11 +20,11 @@ void weed::setVelocity(double velocity[])
 	this->velocity[1] = velocity[1];
 }
 
-void weed::updateVelocity(double acceleration[])
+/*void weed::updateVelocity(double acceleration[])
 {
 	velocity[0] += acceleration[0];
 	velocity[1] += acceleration[1];
-}
+}*/
 
 void weed::applyDrag()
 {

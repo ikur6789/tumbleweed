@@ -41,8 +41,8 @@ class ofApp : public ofBaseApp{
 
 		//wind variables
 		double wind[2] = {0.001, 0.001};
-		double WIND_MIN = -0.005;
-		double WIND_MAX = 0.005;
+		double WIND_MIN = -0.200;
+		double WIND_MAX = 0.200;
 		
 		bool applyRandomSearch = true;
 		double weed_step_min = -0.5;
@@ -51,8 +51,8 @@ class ofApp : public ofBaseApp{
 		bool globalApplyWind = true; // override the above apply wind fo rvariable control
 		bool applyWind = true;
 
-		unsigned int windLength = 10; // how many frames wind is applied for before break, jacob had as 20
-		unsigned int windBreak = 200; // how may frames rest before wind starts again, jacob had as 100
+		unsigned int windLength = 80; // how many frames wind is applied for before break, jacob had as 20
+		unsigned int windBreak = 100; // how may frames rest before wind starts again, jacob had as 100
 
 		unsigned int fitnessCalls = 0;
 
