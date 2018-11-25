@@ -62,6 +62,7 @@ class ofApp : public ofBaseApp{
 		//fitness functions
 		static double elvisNeedsBoats(double * coords, unsigned int dim);
 		static double townsend(double * coords, unsigned int dim);
+		static double birdFunction(double * coords, unsigned int dim);
 		
 		//tumbleweed variables
 		std::vector<weed> weedPopulation;
@@ -75,7 +76,7 @@ class ofApp : public ofBaseApp{
 		int worstWeed = -1; //Identifier for worst tumbleweed
 		double worstPos[2] = {0.0, 0.0};
 
-		const static unsigned int numFitnessFuncs = 2;
+		const static unsigned int numFitnessFuncs = 3;
 		probFunc fitnessFunctions[numFitnessFuncs];
 		unsigned int selectedFunction = 0;
 };
