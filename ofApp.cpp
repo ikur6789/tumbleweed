@@ -268,6 +268,12 @@ void ofApp::update()
 		{
 			a_bestFitness = w.fitness;
 		}
+
+        // BJ added to immediately set velocity to 0 if no wind
+        double zeroVelocity[] = {0.0,0.0};
+        if (!applyWind || !globalApplyWind) {
+            w.setVelocity(zeroVelocity);
+        }
 	}
 
 	for(int i=0; i<weedPopulation.size(); ++i)
@@ -308,12 +314,14 @@ void ofApp::update()
 				percent = 1.0;
 			}
 
-			percent = (-0.9995) * percent + 1.0; 
+            // bj testing with changing vals
+			percent = (-0.9999) * percent + 1.0; 
+            std::cout << "percent: " << percent << std::endl;
 
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
-			weedPopulation[i].updateVelocity(tmpwind);
-			//weedPopulation[i].setVelocity(tmpwind);
+			//weedPopulation[i].updateVelocity(tmpwind);
+			weedPopulation[i].setVelocity(tmpwind); // bj changed to directly set velocity (with no accel)
 		}
 
 		weedPopulation[i].applyDrag();
