@@ -77,6 +77,7 @@ void ofApp::setup()
 	// Initialize the camera closer to our graph
 	cam.setTarget(glm::vec3(0.0f,-5.0f,0.0f));
 	cam.setDistance(15.0f);
+	cam.removeAllInteractions();
 	//ofSetColor(255,255,0);
 	//ofSetFrameRate(25);
 
@@ -246,9 +247,14 @@ void ofApp::update()
 
 			}
 			case 'E': //Global Center Algorithm
-			{}
+			{
+		
+			}
 			case 'F': //Mouse controlled algorithm/program
-			{} 
+			{
+				wind[0] = mouseX;
+				wind[1] = mouseY;								
+			}
 			default:
 			{
 				/* Set the wind to a new direction */
@@ -450,8 +456,10 @@ void ofApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
+void ofApp::mouseMoved(int x, int y )
+{
+	mouseX = x;
+	mouseY = y;	
 }
 
 //--------------------------------------------------------------
