@@ -172,7 +172,7 @@ void ofApp::initializeMesh()
 	{
 		cin >> wind_algorithm;
 		if(1<=choice<=5)
-			wind_algorithm='@'+choice //'@' is ascii 64, choice makes char A-F
+			wind_algorithm='@'+choice; //'@' is ascii 64, choice makes char A-F
 		else
 			choice=0;
 	}
