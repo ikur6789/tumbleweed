@@ -78,4 +78,7 @@ class ofApp : public ofBaseApp{
 		const static unsigned int numFitnessFuncs = 2;
 		probFunc fitnessFunctions[numFitnessFuncs];
 		unsigned int selectedFunction = 0;
+
+		int mouseX = 0;
+		int mouseY = 0;
 };

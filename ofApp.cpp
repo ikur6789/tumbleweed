@@ -223,6 +223,27 @@ void ofApp::update()
 		}
 	}
 
+	
+	wind[0] = mouseX;
+	wind[1] = mouseY;
+
+	double length = sqrt(wind[0] * wind[0] + wind[1] * wind[1]);
+	if(length == 0)
+	{
+		length = 1;
+	}
+
+	wind[0] /= length;
+	//wind[0] *= 0.01;
+	wind[0] *= WIND_MAX;
+	wind[1] /= length;
+	//wind[1] *= 0.01;
+	wind[1] *= WIND_MAX;
+
+	//std::cout << wind[0] << " " << wind[1] << std::endl;
+
+	line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+	line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
 
 	double cycleWorstFitness = 9999.0;  // Ian's
 	double worstFitness = 9999.0;       // jacob
@@ -281,7 +302,7 @@ void ofApp::update()
 				percent = 1.0;
 			}
 
-			percent = (-0.9995) * percent + 1.0; 
+			percent = (-0.90) * percent + 1.0; 
 
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
@@ -376,7 +397,8 @@ void ofApp::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+	mouseX = x - (ofGetWindowWidth() / 2);
+	mouseY = y - (ofGetWindowHeight() / 2);
 }
 
 //--------------------------------------------------------------
