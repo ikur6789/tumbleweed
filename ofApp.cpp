@@ -11,6 +11,7 @@
 
 unsigned frame_cnt = 0;
 unsigned windCycle = 0;
+char wind_algorithm = 'A';
 
 // Fitness function
 double ofApp::elvisNeedsBoats(double * coords, unsigned int dim)
@@ -186,40 +187,66 @@ void ofApp::update()
 	double newWind;
 	if (globalApplyWind)
 	{
-		/* Set the wind to a new direction */
-		if (applyWind == true && frameCount % windLength == 0) {
-			for (int i = 0; i < 2; i++) {
-				if(windCycle==0) //First time evaluation to randomized tumbleweed locations
-					{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
-				else
-				{
-					//Want to go reverse of worst tumble weed
-					newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
-				}
-				//std::cout << "new wind: " << newWind << std::endl;
-				wind[i] = newWind;
+		switch(wind_algorithm)
+		{	
+			case 'A': //BJ's Algorithm
+			{
+				
 			}
+			case 'B': //Ian's Algorithm
+			{
 
-			// KEVIN's ALGORITHM
-			//wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
-			//wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
+			}
+			case 'C': //Jacob's Algorithm
+			{
 
-			//std::cout << "wind break begin!\n";
-			applyWind = false;
-		}
-		/* apply the wind again */
-		if(applyWind == false && frameCount % windBreak == 0) {
-			//std::cout << "wind break end!\n";
-			applyWind = true;
-		}
+			}
+			case 'D': //Kevin's Algorithm
+			{
 
-		if (applyWind == false) {
-			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 0.0;
-			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 0.0;
-		}
-		else {
-			line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
-			line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
+			}
+			case 'E': //Global Center Algorithm
+			{}
+			case 'F': //Mouse controlled algorithm/program
+			{} 
+			default:
+			{
+				/* Set the wind to a new direction */
+				if (applyWind == true && frameCount % windLength == 0) {
+					for (int i = 0; i < 2; i++) {
+						if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+							{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+						else
+						{
+							//Want to go reverse of worst tumble weed
+							newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
+						}
+						//std::cout << "new wind: " << newWind << std::endl;
+						wind[i] = newWind;
+					}
+
+					// KEVIN's ALGORITHM
+					//wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
+					//wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
+
+					//std::cout << "wind break begin!\n";
+					applyWind = false;
+				}
+				/* apply the wind again */
+				if(applyWind == false && frameCount % windBreak == 0) {
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
+
+				if (applyWind == false) {
+					line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 0.0;
+					line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 0.0;
+				}
+				else {
+					line.getVertices()[1].x = line.getVertices()[0].x + wind[0] * 500.0;
+					line.getVertices()[1].z = line.getVertices()[0].z + wind[1] * 500.0;
+				}
+			}
 		}
 	}
 
