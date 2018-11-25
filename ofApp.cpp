@@ -168,10 +168,10 @@ void ofApp::initializeMesh()
 		}
 	}
 	printf("Algorithm?: ");
-	for(int choice=0;1<=choice<=5; )
+	for(int choice=0;(1<=choice)&&(choice<=5); )
 	{
 		cin >> wind_algorithm;
-		if(1<=choice<=5)
+		if((1<=choice)&&(choice<=5))
 			wind_algorithm='@'+choice; //'@' is ascii 64, choice makes char A-F
 		else
 			choice=0;
