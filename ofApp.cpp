@@ -126,7 +126,6 @@ void ofApp::setup()
 		cam.setDistance(15.0f);
 	else
 		cam.setDistance(20.0f);
-	
 	//ofSetColor(255,255,0);
 	//ofSetFrameRate(25);
 
@@ -178,7 +177,7 @@ void ofApp::initializeMesh()
 			mesh.addVertex(point);
 
 			double red = 3.0f * currentY / 14.0f + 1.0f; // try and get values between 0 and 1
-			std::cout << "Red: " << red << std::endl;
+			//std::cout << "Red: " << red << std::endl;
 			mesh.addColor(ofFloatColor(red, 0.0f, 0.0f));
 		}
 	}
@@ -408,7 +407,7 @@ void ofApp::update()
 
             // bj testing with changing vals
 			percent = (-0.9999) * percent + 1.0; 
-            std::cout << "percent: " << percent << std::endl;
+            //std::cout << "percent: " << percent << std::endl;
 
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
@@ -429,7 +428,6 @@ void ofApp::update()
 			worstPos[1] = weedPopulation[i].position[1];
 		}
 	}
-}
 }
 
 //--------------------------------------------------------------
