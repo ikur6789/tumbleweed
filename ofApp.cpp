@@ -49,49 +49,9 @@ double ofApp::townsend(double * coords, unsigned int dim)
 
 void ofApp::setup()
 {
-	ofEnableDepthTest();
-
-	// size is from -8 to 8
-	const int size = 16;
-	// how many vertices per 1 unit
-	const int perUnit = 5;
-	// square root of the number of vertices
-	const int checks = perUnit * size;
-	//size of spheres **bacteria
-	const float width = 0.5f;
-
-    // initialize the fitness funcs
-    fitnessFunctions[0] = { elvisNeedsBoats, false };
-    fitnessFunctions[1] = { townsend, true };
-    selectedFunction = 0;
-
-	// initialize the mesh
-	initializeMesh();
-
-	// initialize our wind vain
-	initializeWindLine();
-
-	//create spheres
-	sphere.setRadius(width);
-
-	// Initialize the camera closer to our graph
-	cam.setTarget(glm::vec3(0.0f,-5.0f,0.0f));
-	cam.setDistance(15.0f);
-	//ofSetColor(255,255,0);
-	//ofSetFrameRate(25);
-
-	for(int i = 0; i < populationSize; ++i)
-	{
-		weed w;
-		w.initializeRandPosition();
-		w.r = 100 + rand() % 155;
-		w.g = 100 + rand() % 155;
-		w.b = 100 + rand() % 155;
-		weedPopulation.push_back(w);
-	}
 	printf("Algorithm?: ");
-	cin>>wind_algorithm;
-	switch(wind_algorithm)
+	cin >> wind_algorithm;
+	/*switch(wind_algorithm)
 	{
 		case 1:
 		case 'A':
@@ -126,8 +86,56 @@ void ofApp::setup()
 		default:
 		wind_algorithm=0;
 		break;
+	}*/
+	if(wind_algorithm>5)
+		wind_algorithm=5;
+	
+	printf("picked:%d\n",wind_algorithm);
+
+	ofEnableDepthTest();
+
+	// size is from -8 to 8
+	const int size = 16;
+	// how many vertices per 1 unit
+	const int perUnit = 5;
+	// square root of the number of vertices
+	const int checks = perUnit * size;
+	//size of spheres **bacteria
+	const float width = 0.5f;
+
+    // initialize the fitness funcs
+    fitnessFunctions[0] = { elvisNeedsBoats, false };
+    fitnessFunctions[1] = { townsend, true };
+    selectedFunction = 0;
+
+	// initialize the mesh
+	initializeMesh();
+
+	// initialize our wind vain
+	initializeWindLine();
+
+	//create spheres
+	sphere.setRadius(width);
+
+	// Initialize the camera closer to our graph
+	cam.setTarget(glm::vec3(0.0f,-5.0f,0.0f));
+	if(wind_algorithm==3)
+		cam.setDistance(15.0f);
+	else
+		cam.setDistance(20.0f);
+	//ofSetColor(255,255,0);
+	//ofSetFrameRate(25);
+
+	for(int i = 0; i < populationSize; ++i)
+	{
+		weed w;
+		w.initializeRandPosition();
+		w.r = 100 + rand() % 155;
+		w.g = 100 + rand() % 155;
+		w.b = 100 + rand() % 155;
+		weedPopulation.push_back(w);
 	}
-		printf("picked:%c\n",wind_algorithm);
+
 }
 
 void ofApp::initializeMesh()
@@ -231,11 +239,45 @@ void ofApp::update()
 		{	
 			case 'A': //BJ's Algorithm
 			{
-				
+				if (applyWind == true && frameCount % windLength == 0) {
+					for (int i = 0; i < 2; i++) {
+						if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+							{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+
+				wind[i] = newWind;
+
+				applyWind = false;
+				}
+				/* apply the wind again */
+				if(applyWind == false && frameCount % windBreak == 0) {
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
+				break;
 			}
 			case 'B': //Ian's Algorithm
 			{
+				if (applyWind == true && frameCount % windLength == 0) {
+					for (int i = 0; i < 2; i++) {
+						if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+							{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+						else
+						{
+							//Want to go reverse of worst tumble weed
+							newWind = (weedPopulation[worstWeed].position[i]*(-1))/1000.0;
+						}
+						//std::cout << "new wind: " << newWind << std::endl;
+						wind[i] = newWind;
+					}
 
+					applyWind = false;
+				}
+				/* apply the wind again */
+				if(applyWind == false && frameCount % windBreak == 0) {
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
+				break;
 			}
 			case 'C': //Jacob's Algorithm
 			{
@@ -336,7 +378,7 @@ void ofApp::update()
 		}
 
 		// Jacob!
-		if (applyWind) 
+		if (applyWind&&(wind_algorithm=='C')) 
 		{
 			double tmpwind[2] = {wind[0], wind[1]};
 			double diff = worstFitness * -1.0;	
@@ -440,6 +482,26 @@ void ofApp::keyPressed(int key){
 		case 'r':
 			applyRandomSearch = !applyRandomSearch;
 			std::cout << "Apply Random Search: " << applyRandomSearch << std::endl;
+		case '1':
+			wind_algorithm = 'A';
+			printf("Wind now A\n");
+			break;
+		case '2':
+			wind_algorithm = 'B';
+			printf("Wind now B\n");
+			break;
+		case '3':
+			wind_algorithm = 'C';
+			printf("Wind now C\n");
+			break;
+		case '4':
+			wind_algorithm = 'D';
+			printf("Wind now D\n");
+			break;
+		case '5':
+			wind_algorithm = 'E';
+			printf("Wind now E\n");
+			break;
 		default:
 			break;
 	}
