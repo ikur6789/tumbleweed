@@ -9,9 +9,7 @@
 
 //smarter wind Ian
 
-unsigned frame_cnt = 0;
-unsigned windCycle = 0;
-char wind_algorithm = 'A';
+
 
 // Fitness function
 double ofApp::elvisNeedsBoats(double * coords, unsigned int dim)
@@ -129,10 +127,12 @@ void ofApp::setup()
 	//ofSetColor(255,255,0);
 	//ofSetFrameRate(25);
 
+	double initVel[] = {0.001, 0.001};
 	for(int i = 0; i < populationSize; ++i)
 	{
 		weed w;
 		w.initializeRandPosition();
+		w.setVelocity(initVel); //Small initial velocity
 		w.r = 100 + rand() % 155;
 		w.g = 100 + rand() % 155;
 		w.b = 100 + rand() % 155;
@@ -364,13 +364,16 @@ void ofApp::update()
 		if(w.fitness > a_bestFitness)
 		{
 			a_bestFitness = w.fitness;
-		}
+		} 
 
-        // BJ added to immediately set velocity to 0 if no wind
-        double zeroVelocity[] = {0.0,0.0};
-        if (!applyWind || !globalApplyWind) {
-            w.setVelocity(zeroVelocity);
-        }
+        if(usingVelocity==false)
+        {
+	        // BJ added to immediately set velocity to 0 if no wind
+	        double zeroVelocity[] = {0.0,0.0};
+	        if (!applyWind || !globalApplyWind) {
+	            w.setVelocity(zeroVelocity);
+	        }
+	    }
 	}
 
 	for(int i=0; i<weedPopulation.size(); ++i)
@@ -416,9 +419,11 @@ void ofApp::update()
             //std::cout << "percent: " << percent << std::endl;
 
 			tmpwind[0] *= percent; 
-			tmpwind[1] *= percent; 
-			//weedPopulation[i].updateVelocity(tmpwind);
-			weedPopulation[i].setVelocity(tmpwind); // bj changed to directly set velocity (with no accel)
+			tmpwind[1] *= percent;
+			//if(usingVelocity) 
+				//weedPopulation[i].updateVelocity(tmpwind);
+			//else
+				weedPopulation[i].setVelocity(tmpwind); // bj changed to directly set velocity (with no accel)
 		}
 
 		weedPopulation[i].applyDrag();
@@ -496,28 +501,34 @@ void ofApp::keyPressed(int key){
 			break;
 		case 'r':
 			applyRandomSearch = !applyRandomSearch;
-			std::cout << "Apply Random Search: " << applyRandomSearch << std::endl;
+			printf("Apply Random Search: ");
+			printf(applyRandomSearch ? "true\n" : "false\n");
+			break;
+		case 'v':
+			usingVelocity = !usingVelocity; //Yes, smart
+			printf("Velocity: ");
+			printf(usingVelocity ? "true\n" : "false\n");
 			break;
 		case '1':
 			wind_algorithm = 'A';
 			printf("Wind now A\n");
-			weed::DRAG = 0.0001;
+			weed::DRAG = 0.1;
 			windBreak=100;
-			 WIND_MIN = -0.200;
-		 WIND_MAX = 0.200;
+			 WIND_MIN = -0.050;
+		 WIND_MAX = 0.050;
 			break;
 		case '2':
 			wind_algorithm = 'B';
 			printf("Wind now B\n");
-			weed::DRAG = 0.0001;
+			weed::DRAG = 0.1;
 			windBreak=100;
-			 WIND_MIN = -0.200;
-		 WIND_MAX = 0.200;
+			 WIND_MIN = -0.050;
+		 WIND_MAX = 0.050;
 			break;
 		case '3':
 			wind_algorithm = 'C';
 			printf("Wind now C\n");
-			weed::DRAG = 0.0001;
+			weed::DRAG = 0.001;
 			windBreak=100;
 			 WIND_MIN = -0.200;
 		 WIND_MAX = 0.200;
@@ -525,7 +536,7 @@ void ofApp::keyPressed(int key){
 		case '4':
 			wind_algorithm = 'D';
 			printf("Wind now D\n");
-			weed::DRAG = 0.001; //Changed for Kevin's algo
+			weed::DRAG = 0.01; //Changed for Kevin's algo
 			windBreak=100;
 			windLength=20;
 			WIND_MIN= -0.01;
@@ -534,7 +545,7 @@ void ofApp::keyPressed(int key){
 		case '5':
 			wind_algorithm = 'E';
 			printf("Wind now E\n");
-			weed::DRAG = 0.0001;
+			weed::DRAG = 0.001;
 			windBreak=100;
 			 WIND_MIN = -0.200;
 		 WIND_MAX = 0.200;

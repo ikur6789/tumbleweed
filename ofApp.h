@@ -44,7 +44,7 @@ class ofApp : public ofBaseApp{
 		double WIND_MIN = -0.200;
 		double WIND_MAX = 0.200;
 		
-		bool applyRandomSearch = true;
+		bool applyRandomSearch = false;
 		double weed_step_min = -0.5;
 		double weed_step_max = 0.5;
 		
@@ -81,4 +81,9 @@ class ofApp : public ofBaseApp{
 
 		int mouseX = 0;
 		int mouseY = 0;
+
+		unsigned frame_cnt = 0;
+		unsigned windCycle = 0;
+		char wind_algorithm = 'A';
+		bool usingVelocity = false;
 };
