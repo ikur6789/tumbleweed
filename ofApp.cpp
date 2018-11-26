@@ -55,7 +55,7 @@ double ofApp::birdFunction(double * coords, unsigned int dim)
 	double sinVar = sin(y)*exp(pow(1-cos(x), 2));
 	double cosVar = cos(x)*exp(pow(1-sin(y), 2));
 
-	return sinVar + cosVar + pow(x-y, 2);
+	return ((sinVar + cosVar + pow(x-y, 2)) * 0.07 + 8.0f) * -1.0f; // scale that shiz down
 }
 
 void ofApp::setup()
@@ -302,7 +302,7 @@ void ofApp::update()
 
             // bj testing with changing vals
 			percent = (-0.9999) * percent + 1.0; 
-            std::cout << "percent: " << percent << std::endl;
+            //std::cout << "percent: " << percent << std::endl;
 
 			tmpwind[0] *= percent; 
 			tmpwind[1] *= percent; 
