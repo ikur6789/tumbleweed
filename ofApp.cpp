@@ -260,8 +260,8 @@ void ofApp::update()
 						//std::cout << "wind break end!\n";
 						applyWind = true;
 					}
-				break;
 			}
+			break;
 
 			case 'B': //Ian's Algorithm
 			{
@@ -285,18 +285,20 @@ void ofApp::update()
 					//std::cout << "wind break end!\n";
 					applyWind = true;
 				}
-				break;
 			}
+			break;
 			case 'C': //Jacob's Algorithm
 			{
 
 			}
+			break;
 			case 'D': //Kevin's Algorithm
 			{
 				// KEVIN's ALGORITHM
 					wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
 					wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
 			}
+			break;
 			case 'E': //Global Center Algorithm
 			{
 		
@@ -306,6 +308,9 @@ void ofApp::update()
 				wind[0] = mouseX;
 				wind[1] = mouseY;								
 			}
+			break;
+			// by default, go to mix algorithm
+			case 'G':
 			default:
 			{
 				/* Set the wind to a new direction */
@@ -335,6 +340,7 @@ void ofApp::update()
 					applyWind = true;
 				}
 			}
+			break;
 		}
 
 		if (applyWind == false) {
