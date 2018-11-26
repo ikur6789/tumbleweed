@@ -45,6 +45,18 @@ double ofApp::townsend(double * coords, unsigned int dim)
 	return cosVal - sinVal;
 }
 
+double ofApp::birdFunction(double * coords, unsigned int dim)
+{
+	/* Assuming input is coords[0] = x, coords[1] = y */
+	double x = coords[0];
+	double y = coords[1];
+
+	double sinVar = sin(y)*exp(pow(1-cos(x), 2));
+	double cosVar = cos(x)*exp(pow(1-sin(y), 2));
+
+	return ((sinVar + cosVar + pow(x-y, 2)) * 0.07 + 8.0f) * -1.0f; // scale that shiz down
+}
+
 void ofApp::setup()
 {
 	printf("Algorithm?: ");
@@ -104,7 +116,8 @@ void ofApp::setup()
     // initialize the fitness funcs
     fitnessFunctions[0] = { elvisNeedsBoats, false };
     fitnessFunctions[1] = { townsend, true };
-    selectedFunction = 0;
+	fitnessFunctions[2] = { birdFunction, false };
+    selectedFunction = 2;
 
 	// initialize the mesh
 	initializeMesh();
