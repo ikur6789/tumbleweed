@@ -400,13 +400,6 @@ void ofApp::update()
 		{
 
 			bestFitness = weedPopulation[i].fitness;
-			
-			if(bestFitness > 0.411)
-			{
-				cout << "Best fitness = " << bestFitness << endl;
-				cout << "Iterations = " << frameCount << endl;
-				ofExit();
-			}
 
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
