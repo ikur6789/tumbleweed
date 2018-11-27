@@ -61,45 +61,8 @@ void ofApp::setup()
 {
 	printf("Algorithm?: ");
 	cin >> wind_algorithm;
-	/*switch(wind_algorithm)
-	{
-		case 1:
-		case 'A':
-		case 'a':
-		wind_algorithm='A';
-		break;
+	wind_algorithm = toupper(wind_algorithm);
 
-		case 2:
-		case 'B':
-		case 'b':
-		wind_algorithm='B';
-		break;
-
-		case 3:
-		case 'C':
-		case 'c':
-		wind_algorithm='C';
-		break;
-
-		case 4:
-		case 'D':
-		case 'd':
-		wind_algorithm='D';
-		break;
-
-		case 5:
-		case 'E':
-		case 'e':
-		wind_algorithm='E';
-		break;
-		
-		default:
-		wind_algorithm=0;
-		break;
-	}*/
-	if(wind_algorithm>5)
-		wind_algorithm=5;
-	
 	printf("picked:%d\n",wind_algorithm);
 
 	ofEnableDepthTest();
@@ -117,7 +80,7 @@ void ofApp::setup()
     fitnessFunctions[0] = { elvisNeedsBoats, false };
     fitnessFunctions[1] = { townsend, true };
 	fitnessFunctions[2] = { birdFunction, false };
-    selectedFunction = 2;
+    selectedFunction = 0;
 
 	// initialize the mesh
 	initializeMesh();
@@ -266,14 +229,14 @@ void ofApp::update()
 
 							applyWind = false;
 					}
-					/* apply the wind again */
-					
 				}
+
+				/* apply the wind again */
 				if(applyWind == false && frameCount % windBreak == 0) {
-						//std::cout << "wind break end!\n";
-						applyWind = true;
-					}
-			}
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
+	}
 			break;
 
 			case 'B': //Ian's Algorithm
@@ -289,10 +252,10 @@ void ofApp::update()
 						}
 						//std::cout << "new wind: " << newWind << std::endl;
 						wind[i] = newWind;
+						applyWind = false;
 					}
-
-					applyWind = false;
 				}
+
 				/* apply the wind again */
 				if(applyWind == false && frameCount % windBreak == 0) {
 					//std::cout << "wind break end!\n";
@@ -300,30 +263,66 @@ void ofApp::update()
 				}
 			}
 			break;
+
 			case 'C': //Jacob's Algorithm
 			{
-
+				
 			}
 			break;
+
 			case 'D': //Kevin's Algorithm
 			{
-				// KEVIN's ALGORITHM
-					wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
-					wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
+				if (applyWind == true && frameCount % windLength == 0) {
+					for (int i = 0; i < 2; i++) {
+						if(windCycle==0) //First time evaluation to randomized tumbleweed locations
+							{newWind = WIND_MIN + (double)rand() / ((double)RAND_MAX / (WIND_MAX - WIND_MIN));}
+						else
+						{
+							//Want to go worst to best
+							wind[i] = (weedPopulation[0].position[i] - weedPopulation[weedPopulation.size()-1].position[i])/1000;
+						}
+						//std::cout << "new wind: " << newWind << std::endl;
+						wind[i] = newWind;
+						applyWind = false;
+					}
+				}
+
+				/* apply the wind again */
+				if(applyWind == false && frameCount % windBreak == 0) {
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
 			}
 			break;
+
 			case 'E': //Global Center Algorithm
 			{
 		
 			}
+
 			case 'F': //Mouse controlled algorithm/program
 			{
-				wind[0] = mouseX;
-				wind[1] = mouseY;								
+				if (applyWind == true && frameCount % windLength == 0) {
+					for (int i = 0; i < 2; i++) 
+					{
+						wind[0] = mouseX;
+						wind[1] = mouseY;
+					
+						//std::cout << "new wind: " << newWind << std::endl;
+						wind[i] = newWind;
+						applyWind = false;
+					}
+				}
+				
+				/* apply the wind again */
+				if(applyWind == false && frameCount % windBreak == 0) {
+					//std::cout << "wind break end!\n";
+					applyWind = true;
+				}
 			}
 			break;
+
 			// by default, go to mix algorithm
-			case 'G':
 			default:
 			{
 				/* Set the wind to a new direction */
@@ -339,10 +338,6 @@ void ofApp::update()
 						//std::cout << "new wind: " << newWind << std::endl;
 						wind[i] = newWind;
 					}
-
-					// KEVIN's ALGORITHM
-					//wind[0] = (weedPopulation[0].position[0] - weedPopulation[weedPopulation.size()-1].position[0])/1000;
-					//wind[1] = (weedPopulation[0].position[1] - weedPopulation[weedPopulation.size()-1].position[1])/1000;
 
 					//std::cout << "wind break begin!\n";
 					applyWind = false;
@@ -403,7 +398,16 @@ void ofApp::update()
 		/* Keep track of current best */
 		if (weedPopulation[i].fitness > bestFitness) 
 		{
+
 			bestFitness = weedPopulation[i].fitness;
+			
+			if(bestFitness > 0.411)
+			{
+				cout << "Best fitness = " << bestFitness << endl;
+				cout << "Iterations = " << frameCount << endl;
+				ofExit();
+			}
+
 			bestPos[0] = weedPopulation[i].position[0];
 			bestPos[1] = weedPopulation[i].position[1];
 
@@ -434,7 +438,7 @@ void ofApp::update()
 			}
 
             // bj testing with changing vals
-			percent = (-0.9999) * percent + 1.0; 
+			percent = (-0.8) * percent + 1.0; 
             //std::cout << "percent: " << percent << std::endl;
 
 			tmpwind[0] *= percent; 
@@ -508,67 +512,61 @@ void ofApp::keyPressed(int key){
 			globalApplyWind = !globalApplyWind;
 			std::cout << "Global Apply wind: " << globalApplyWind << std::endl;
 			break;
+
 		case 'a':
 			WIND_MIN += 0.0005;
 			WIND_MAX -= 0.0005;
 			std::cout << "Wind Min,Max: " << WIND_MIN << " " << WIND_MAX << std::endl;
 			break;
+		
 		case 's':
 			WIND_MIN -= 0.0005;
 			WIND_MAX += 0.0005;
 			std::cout << "Wind Min,Max: " << WIND_MIN << " " << WIND_MAX << std::endl;
 			break;
+		
 		case 'r':
 			applyRandomSearch = !applyRandomSearch;
 			printf("Apply Random Search: ");
 			printf(applyRandomSearch ? "true\n" : "false\n");
 			break;
+		
 		case 'v':
 			usingVelocity = !usingVelocity; //Yes, smart
 			printf("Velocity: ");
 			printf(usingVelocity ? "true\n" : "false\n");
 			break;
+		
 		case '1':
 			wind_algorithm = 'A';
 			printf("Wind now A\n");
-			weed::DRAG = 0.1;
-			windBreak=100;
-			 WIND_MIN = -0.050;
-		 WIND_MAX = 0.050;
 			break;
+		
 		case '2':
 			wind_algorithm = 'B';
 			printf("Wind now B\n");
-			weed::DRAG = 0.1;
-			windBreak=100;
-			 WIND_MIN = -0.050;
-		 WIND_MAX = 0.050;
 			break;
+		
 		case '3':
 			wind_algorithm = 'C';
 			printf("Wind now C\n");
-			weed::DRAG = 0.001;
-			windBreak=100;
-			 WIND_MIN = -0.200;
-		 WIND_MAX = 0.200;
 			break;
+		
 		case '4':
 			wind_algorithm = 'D';
 			printf("Wind now D\n");
-			weed::DRAG = 0.01; //Changed for Kevin's algo
-			windBreak=100;
-			windLength=20;
-			WIND_MIN= -0.01;
-			WIND_MAX=  0.01;
 			break;
+		
 		case '5':
 			wind_algorithm = 'E';
 			printf("Wind now E\n");
-			weed::DRAG = 0.001;
-			windBreak=100;
-			 WIND_MIN = -0.200;
-		 WIND_MAX = 0.200;
 			break;
+		
+		case '6':
+			wind_algorithm = 'F';
+			printf("Wind now F\n");
+			break;
+		
 		default:
 			break;
 	}
@@ -579,26 +577,26 @@ void ofApp::keyReleased(int key){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y )
-{
-	mouseX = x;
-	mouseY = y;	
+void ofApp::mouseMoved(int x, int y ){
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
-}
+/*	mouseX = x;
+	mouseY = y;
+*/}
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+	
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
-}
+/*	mouseX = 0;
+	mouseY = 0;
+*/}
 
 //--------------------------------------------------------------
 void ofApp::mouseEntered(int x, int y){
